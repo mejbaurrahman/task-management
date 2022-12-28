@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider'
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -18,20 +18,33 @@ export default function Login() {
         googleLogin,
         login,
         logOut,
-        setUser} = useContext(AuthContext);
-        const [errorShow, setErrorShow] = useState('');
-  const location = useLocation();
-  const navigate = useNavigate();
-        const handleLogin =(e)=>{
+    setUser} = useContext(AuthContext);
+    const [errorShow, setErrorShow] = useState('');
+    const location = useLocation();
+    const navigate = useNavigate();
+    const handleLogin =(e)=>{
             e.preventDefault();
-        
+            setErrorShow('')
+            const form = e.target;
+            const email = form.email.value;
+            const password = form.password.value;
+            login(email, password)
+            .then(result=>{
+              const user = result.user;
+            }).catch(error=>{
+              setErrorShow(error.message)
+            })
         }
 
-        const handleGoogleLogin =()=>{
+    const handleGoogleLogin =()=>{
+          setErrorShow('')
             googleLogin()
             .then(user=>{
 
-            }).catch((error)=> console.log(error.message))
+            }).catch((error)=> {
+              console.log(error.message);
+              setErrorShow(error.message)
+            })
         }
   return (
  <Container fixed>

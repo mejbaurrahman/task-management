@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider'
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -19,8 +19,23 @@ export default function SignUp() {
         login,
         logOut,
         setUser} = useContext(AuthContext);
+        const [errorShow, setErrorShow] = useState('');
        
+      const signUp = (e)=>{
+          e.preventDefault();
+          setErrorShow('');
+          const form = e.target;
+          const email = form.email.value;
+          const password = form.password.value;
 
+          createUser(email, password)
+          .then(result=>{
+            const user = result.user;
+          }).catch(error=>{
+            console.log(error.message);
+              setErrorShow(error.message)
+          })
+      }
   return (
  <Container fixed>
      <Box className='' sx={{padding: '100px'}}>
@@ -29,18 +44,13 @@ export default function SignUp() {
   <Grid xs={12} md={6}>
     <Box sx={{padding:'30px'}}>
     <Typography variant='h5' sx={{fontWeight:500, color:'blueviolet' }} >Sign Up</Typography>
-    <TextField id="outlined-basic" 
-    label="Name" 
-    name='name'
-    type='text'
-    variant="outlined" 
-    sx={{marginTop:'30px', width:'100%'}}/>
+    
     <TextField id="outlined-basic" 
     label="Email" 
     name='email'
     type='email'
     variant="outlined" 
-    sx={{marginTop:'15px', width:'100%'}}/>
+    sx={{marginTop:'25px', width:'100%'}}/>
     <TextField id="outlined-basic" 
     label="Password" 
     name='password'
