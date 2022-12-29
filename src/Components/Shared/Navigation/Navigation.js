@@ -10,21 +10,26 @@ import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
+import { useTheme, ThemeProvider, createTheme } from '@mui/material/styles';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
-
+const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 export default function Navigation() {
+  const colorMode = React.useContext(ColorModeContext);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const navigate = useNavigate();
+  const theme = useTheme();
   const {user,
     setLoading,
     loading,
-   
+   mode, setMode,
     logOut,
     } = useContext(AuthContext);
   const signout =()=>{
@@ -49,7 +54,7 @@ export default function Navigation() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" color={`${mode? 'primary':'secondary'}`}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
@@ -64,7 +69,7 @@ export default function Navigation() {
               fontFamily: 'monospace',
               fontWeight: 700,
               letterSpacing: '.3rem',
-              color: 'inherit',
+              color: `${mode? 'inherit':'dark'}`,
               textDecoration: 'none',
             }}
           >
@@ -107,8 +112,9 @@ export default function Navigation() {
                   <Link  to='/' style={{textDecoration:'none'}}> <Button
                 // key={page}
                 variant="contained"
+                color={`${mode? 'primary':'secondary'}`}
                 // onClick={handleCloseNavMenu}
-                sx={{ }}
+                sx={{color: `${mode? 'white':'black'}` }}
               >
                 Add Task
               </Button></Link>
@@ -120,8 +126,9 @@ export default function Navigation() {
                   <Link to='/mytask' style={{textDecoration:'none'}}> <Button
                 // key={page}
                 variant="contained"
+                color={`${mode? 'primary':'secondary'}`}
                 // onClick={handleCloseNavMenu}
-                sx={{ }}
+                sx={{color: `${mode? 'white':'black'}` }}
               >
                 My Task
               </Button></Link>
@@ -132,8 +139,9 @@ export default function Navigation() {
                   <Link to='/completeTask' style={{textDecoration:'none'}}> <Button
                 // key={page}
                 variant="contained"
+                color={`${mode? 'primary':'secondary'}`}
                 // onClick={handleCloseNavMenu}
-                sx={{  }}
+                sx={{ color: `${mode? 'white':'black'}` }}
               >
                 Complete Task
               </Button></Link>
@@ -144,12 +152,13 @@ export default function Navigation() {
                   <Button
                 // key={page}
                 variant="contained"
+                color={`${mode? 'primary':'secondary'}`}
                 // onClick={handleCloseNavMenu}
-                sx={{  }}
+                sx={{ color: `${mode? 'white':'black'}` }}
               >
                  <Button
                 
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                sx={{ my: 2, color: `${mode? 'white':'black'}`, display: 'block' }}
               >
                 {
                 user?.email && <Typography variant='p'>{user?.email}</Typography>
@@ -186,7 +195,7 @@ export default function Navigation() {
                 // key={page}
                 
                 // onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                sx={{ my: 2, color: `${mode? 'white':'black'}`, display: 'block' }}
               >
                 Add Task
               </Button></Link>
@@ -194,7 +203,7 @@ export default function Navigation() {
                 // key={page}
                 
                 // onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                sx={{ my: 2, color: `${mode? 'white':'black'}`, display: 'block' }}
               >
                 My Task
               </Button></Link>
@@ -202,7 +211,7 @@ export default function Navigation() {
                 // key={page}
                 
                 // onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                sx={{ my: 2, color: `${mode? 'white':'black'}`, display: 'block' }}
               >
                 Complete Task
               </Button></Link>
@@ -212,7 +221,7 @@ export default function Navigation() {
              
               <Button
                 
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                sx={{ my: 2, color: `${mode? 'white':'black'}`, display: 'block' }}
               >
                 {
                 user?.email && <Typography variant='p'>{user?.email}</Typography>
@@ -224,7 +233,9 @@ export default function Navigation() {
 
           <Box sx={{ flexGrow: 0 }}>
             {
-              user?.email && <Box> <Button variant='contained' onClick={signout}>Logout</Button></Box>
+              user?.email && <Box> <Button variant='contained' onClick={signout}>Logout</Button>  <IconButton sx={{ ml: 1 }} onClick={()=>setMode(!mode)} color="inherit">
+              {mode === true ?<Brightness4Icon />: <Brightness7Icon /> }
+            </IconButton></Box>
             }
             <Menu
               sx={{ mt: '45px' }}

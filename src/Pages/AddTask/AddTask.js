@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider'
 
 export default function AddTask() {
-const {user} = useContext(AuthContext);
+const {user, mode} = useContext(AuthContext);
 const navigate = useNavigate();
   const handleAddTask =(e)=>{
     e.preventDefault();
@@ -36,20 +36,21 @@ const navigate = useNavigate();
 
   }
   return (
-    <Box className='' sx={{margin:'0 auto'}}>
-      <Typography variant='h5' sx={{my:3}} >ADD TASK</Typography>
+    <Box className='' sx={{margin:'0 auto'}} >
+      <Typography variant='h5' sx={{my:3, color:`${mode? 'dark':'white'}`}} >ADD TASK</Typography>
       <form action="" onSubmit={handleAddTask}>
       <TextField
-        sx={{width:'50%'}}
+        
           id="filled-search"
           label="Task Description .."
           type="text"
           name= 'task'
           variant="filled"
+          sx={{backgroundColor:`${mode? 'white': 'white'}`, width:'50%'}}
         /> 
         <br />
         <br />
-        <Button type='submit' variant='contained'>ADD TASK</Button>
+        <Button type='submit' variant='contained' color={`${mode? 'primary':'secondary'}`}>ADD TASK</Button>
       </form>
     </Box>
   )

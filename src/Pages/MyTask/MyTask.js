@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import { Button, Divider, Typography } from '@mui/material';
+import { Button, CircularProgress, Divider, Typography } from '@mui/material';
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 import { toast } from 'react-hot-toast';
 
@@ -15,16 +15,18 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 export default function MyTask() {
-  const {user} = useContext(AuthContext)
+  const {user, mode} = useContext(AuthContext)
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(()=>{
+    setLoading(true)
       fetch(`http://localhost:5000/tasks?email=${user?.email}`)
       .then(res=>res.json())
       .then(data=>{
         console.log(data)
         setTasks(data);
+        setLoading(false)
       })
   }, [])
 
@@ -47,24 +49,28 @@ export default function MyTask() {
       })
  }
   return (
-    <div>
-      <Typography variant='h5' sx={{mt:3}}>MY TASKS</Typography>
-      <Divider variant="inset"/>
-      <Box sx={{ flexGrow: 1, my:3, padding: '30px'}}>
-    <Grid container spacing={2}>
-      {
-        tasks?.map(task=><Grid item xs={12} md={4}>
-        <Item sx={{mb:1}}><Typography variant='p'>{task.task}</Typography> <br />
-        <Button variant='contained' onClick={()=>handleCompleteTask(task._id)}>Complete Task</Button>
-        </Item>
-          
-         </Grid>
-        )
-      }
-      
-    </Grid>
-  </Box>
-    </div>
+   <>
+   {
+    loading? <CircularProgress sx={{mt:5}} color={`${mode? 'primary':'secondary'}`} />:  <div>
+    <Typography variant='h5' sx={{mt:3, color:`${mode? 'dark':'white'}`}}>MY TASKS</Typography>
+    <Divider variant="inset"/>
+    <Box sx={{ flexGrow: 1, my:3, padding: '30px'}}>
+  <Grid container spacing={2}>
+    {
+      tasks?.map(task=><Grid item xs={12} md={4}>
+      <Item sx={{mb:1}}><Typography variant='p'>{task.task}</Typography> <br />
+      <Button variant='contained' color={`${mode? 'primary':'secondary'}`} onClick={()=>handleCompleteTask(task._id)}>Complete Task</Button>
+      </Item>
+        
+       </Grid>
+      )
+    }
+    
+  </Grid>
+</Box>
+  </div>
+   }
+   </>
     
   )
 }

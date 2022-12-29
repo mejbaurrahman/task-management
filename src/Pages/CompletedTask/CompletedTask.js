@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import { Button, Divider, Typography } from '@mui/material';
+import { Button, CircularProgress, Divider, Typography } from '@mui/material';
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 import { toast } from 'react-hot-toast';
 
@@ -15,16 +15,18 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 export default function CompletedTask() {
-  const {user} = useContext(AuthContext)
+  const {user, mode} = useContext(AuthContext)
   const [completeTasks, setCompleteTasks] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(()=>{
+    setLoading(true)
       fetch(`http://localhost:5000/completetasks?email=${user?.email}`)
       .then(res=>res.json())
       .then(data=>{
         console.log(data)
         setCompleteTasks(data);
+        setLoading(false)
       })
   }, [])
 
@@ -38,7 +40,7 @@ export default function CompletedTask() {
       .then(res=>res.json())
       .then(data=>{
         console.log(data);
-        toast.success(' You have completed the task');
+        toast.success(' Added in you task list again');
         const newTasks = completeTasks.filter(task=>task._id !== id);
         setCompleteTasks(newTasks);
       }).catch(error=>{
@@ -47,24 +49,28 @@ export default function CompletedTask() {
       })
  }
   return (
-    <div>
-    <Typography variant='h5' sx={{mt:3}}>COMPLETED TASKS</Typography>
-    <Divider variant="inset"/>
-    <Box sx={{ flexGrow: 1, my:3, padding: '30px'}}>
-  <Grid container spacing={2}>
+    <>
     {
-      completeTasks?.map(task=><Grid item xs={12} md={4}>
-      <Item sx={{mb:1}}><Typography variant='p'>{task.task}</Typography> <br />
-      <Button variant='contained' onClick={()=>handleNotCompleteTask(task._id)}>Not Completed</Button>
-      </Item>
-        
-       </Grid>
-      )
+      loading? <CircularProgress sx={{mt:5}} color={`${mode? 'primary':'secondary'}`} /> : <div>
+      <Typography variant='h5' sx={{mt:3, color:`${mode? 'dark':'white'}`}}>COMPLETED TASKS</Typography>
+      <Divider sx={{color:`${mode? 'black':'white'}`}}/>
+      <Box sx={{ flexGrow: 1, my:3, padding: '30px'}}>
+    <Grid container spacing={2}>
+      {
+        completeTasks?.map(task=><Grid item xs={12} md={4}>
+        <Item sx={{mb:1}}><Typography variant='p'>{task.task}</Typography> <br />
+        <Button variant='contained' color={`${mode? 'primary':'secondary'}`} onClick={()=>handleNotCompleteTask(task._id)}>Not Completed</Button>
+        </Item>
+          
+         </Grid>
+        )
+      }
+      
+    </Grid>
+  </Box>
+    </div>
     }
-    
-  </Grid>
-</Box>
-  </div>
+    </>
   
   )
 }
