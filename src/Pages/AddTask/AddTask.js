@@ -17,7 +17,7 @@ const navigate = useNavigate();
       task,
       status: "not complete"
     }
-    const url = `http://localhost:5000/tasks`;
+    const url = `https://task-management-server-one.vercel.app/tasks`;
     fetch(url, {
       method: "POST", 
       headers: {

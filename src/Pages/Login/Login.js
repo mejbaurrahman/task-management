@@ -53,7 +53,7 @@ export default function Login() {
     }
   return (
  <Container fixed>
-     <Box className='' sx={{padding: '100px'}}>
+     <Box className='' sx={{paddingTop: '40px', px:'20px'}}>
 
 <Grid container spacing={2}>
   <Grid xs={12} md={6}>

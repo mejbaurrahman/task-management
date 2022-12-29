@@ -21,7 +21,7 @@ export default function CompletedTask() {
 
   useEffect(()=>{
     setLoading(true)
-      fetch(`http://localhost:5000/completetasks?email=${user?.email}`)
+      fetch(`https://task-management-server-one.vercel.app/completetasks?email=${user?.email}`)
       .then(res=>res.json())
       .then(data=>{
         console.log(data)
@@ -31,7 +31,7 @@ export default function CompletedTask() {
   }, [])
 
  const handleNotCompleteTask = (id)=>{
-      fetch(`http://localhost:5000/completetasks/${id}`, {
+      fetch(`https://task-management-server-one.vercel.app/completetasks/${id}`, {
         method: "PUT",
         headers:{
           'content-type':'application/json'

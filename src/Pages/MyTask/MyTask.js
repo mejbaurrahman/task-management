@@ -21,7 +21,7 @@ export default function MyTask() {
 
   useEffect(()=>{
     setLoading(true)
-      fetch(`http://localhost:5000/tasks?email=${user?.email}`)
+      fetch(`https://task-management-server-one.vercel.app/tasks?email=${user?.email}`)
       .then(res=>res.json())
       .then(data=>{
         console.log(data)
@@ -31,7 +31,7 @@ export default function MyTask() {
   }, [])
 
  const handleCompleteTask = (id)=>{
-      fetch(`http://localhost:5000/tasks/${id}`, {
+      fetch(`https://task-management-server-one.vercel.app/tasks/${id}`, {
         method: "PUT",
         headers:{
           'content-type':'application/json'
