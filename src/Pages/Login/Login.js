@@ -22,6 +22,7 @@ export default function Login() {
     const [errorShow, setErrorShow] = useState('');
     const location = useLocation();
     const navigate = useNavigate();
+    let from = location.state?.from?.pathname || "/";
     const handleLogin =(e)=>{
             e.preventDefault();
             setErrorShow('')
@@ -31,6 +32,7 @@ export default function Login() {
             login(email, password)
             .then(result=>{
               const user = result.user;
+              navigate(from, {replace:true})
             }).catch(error=>{
               setErrorShow(error.message)
             })
@@ -40,12 +42,15 @@ export default function Login() {
           setErrorShow('')
             googleLogin()
             .then(user=>{
-
+              navigate(from, {replace:true})
             }).catch((error)=> {
               console.log(error.message);
               setErrorShow(error.message)
             })
         }
+    if(user?.email){
+      navigate('/')
+    }
   return (
  <Container fixed>
      <Box className='' sx={{padding: '100px'}}>
@@ -53,7 +58,7 @@ export default function Login() {
 <Grid container spacing={2}>
   <Grid xs={12} md={6}>
     <Box sx={{padding:'30px'}}>
-    <Typography variant='h5' sx={{fontWeight:500, color:'blueviolet' }} >Login</Typography>
+    <Typography variant='h5' sx={{fontWeight:500, color:'#1976d2' }} >Login</Typography>
    <form action="" onSubmit={handleLogin}>
    <TextField id="outlined-basic" 
     label="Email" 

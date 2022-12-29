@@ -20,7 +20,7 @@ export const router = createBrowserRouter([{
             element:<PrivateRoute><MyTask></MyTask></PrivateRoute>
         },
         {
-            path:'/completedTask',
+            path:'/completeTask',
             element:<PrivateRoute><CompletedTask></CompletedTask></PrivateRoute>
         },
 

@@ -1,17 +1,20 @@
 import React, { useContext } from 'react'
+import { Outlet } from 'react-router-dom';
+import Navigation from '../../Components/Shared/Navigation/Navigation';
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 
 export default function Main() {
-    const {user,  createUser,
+    const {user,
         setLoading,
         loading,
-        googleLogin,
-        login,
+       
         logOut,
-        setUser} = useContext(AuthContext);
+        } = useContext(AuthContext);
   return (
-    <div>Main
-        <button onClick={logOut}>logout</button>
+    <div>
+        <Navigation></Navigation>
+        <Outlet></Outlet>
+        
     </div>
   )
 }
